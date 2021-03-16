@@ -390,9 +390,15 @@ export class WebcamComponent implements AfterViewInit, OnDestroy {
    */
   private stopMediaTracks() {
     if (this.mediaStream && this.mediaStream.getTracks) {
-      // getTracks() returns all media tracks (video+audio)
-      this.mediaStream.getTracks()
-        .forEach((track: MediaStreamTrack) => track.stop());
+        // getTracks() returns all media tracks (video+audio)
+        const _video = this.nativeVideoElement;
+        _video.srcObject = null;
+
+        this.mediaStream.getTracks()
+            .forEach((track) => {
+                this.mediaStream.removeTrack(track);
+                track.stop();
+            });
     }
   }
 
